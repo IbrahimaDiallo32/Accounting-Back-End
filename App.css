@@ -1,0 +1,12 @@
+html, body {
+  background-color: #FBF7F6;
+  text-align: center;
+}
+
+.logo{
+  align-content: center;
+}
+button{
+  background-color: cornflowerblue;
+  color: #FBF7F6;
+}
