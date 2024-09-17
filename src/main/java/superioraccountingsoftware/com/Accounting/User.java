@@ -27,5 +27,6 @@ public class User {
     private String address;
     private String dateOfBirth;
     private boolean isActive;
+    private String [] recentlyUsedPasswords;
     private List<UpdateMe> updateMe;
 }
