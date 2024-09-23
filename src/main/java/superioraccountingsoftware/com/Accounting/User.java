@@ -16,7 +16,7 @@ import java.util.List;
 public class User {
     @Id
     private ObjectId id; //ObjectId is a class commonly used in MongoDB to uniquely identify documents within a collection making it globally unique.
-    private String userID; //it matters what you name these variables, they match up with the database variable names
+    private int userID; //it matters what you name these variables, they match up with the database variable names
     private String firstName;
     private String lastName;
     private String email;
@@ -25,8 +25,13 @@ public class User {
     private String accountCreatedDate;
     private String accountType;
     private String address;
-    private String dateOfBirth;
     private boolean isActive;
+    private int birthDate;
+    private String birthYear;
+    private String birthMonth;
+    private String userName;
+    private String accountStatus;
+    private boolean passwordIsExpired;
     private String [] recentlyUsedPasswords;
     private List<UpdateMe> updateMe;
 }

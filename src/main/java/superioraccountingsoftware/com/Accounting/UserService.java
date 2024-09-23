@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired //this will instantiate the userRepository class for us instead of having to use the constructor
     private UserRepository userRepository;
+
+    public User createNewUser(User user) {
+      return userRepository.save(user);
+    }
     public List<User> getAllUsers(){
-        System.out.println(userRepository.findAll().toString());
         return userRepository.findAll(); //this method is in the MongoRepository class
     }
     public Optional<User> findId(ObjectId id){ //its optional because a user many not be returned
