@@ -30,6 +30,14 @@ public class AccountingController {
     public ResponseEntity<Optional<User>> getSingleUser(@PathVariable ObjectId id) {
         return new ResponseEntity<Optional<User>>(userService.findId(id), HttpStatus.OK);
     }
+    @GetMapping("/username/{username}")
+    public ResponseEntity<Optional<User>> getUserByUsername(@PathVariable String username) {
+        return new ResponseEntity<Optional<User>>(userService.findUsername(username), HttpStatus.OK);
+    }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Optional<User>> getUserByEmail(@PathVariable String email) {
+        return new ResponseEntity<Optional<User>>(userService.findEmail(email), HttpStatus.OK);
+    }
     @GetMapping("/userID/{userID}")
     public ResponseEntity<Optional<User>> getSingleUser(@PathVariable String userID) { //passing the information in the getMapping parameters
         return new ResponseEntity<Optional<User>>(userService.singleUser(userID), HttpStatus.OK);
