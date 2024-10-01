@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/hey") //the specified URL the following code wil work for
-public class AccountingController {
+public class UserController {
     @Autowired
     private UserService userService;
 
@@ -23,27 +23,32 @@ public class AccountingController {
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() { //Getting request from user and returning a response
-        return new ResponseEntity<List<User>>(userService.getAllUsers(), HttpStatus.OK); //gets all users from DB and giving it to API Layer
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK); //gets all users from DB and giving it to API Layer
     }
 
     @GetMapping("/ID/{id}")
     public ResponseEntity<Optional<User>> getSingleUser(@PathVariable ObjectId id) {
-        return new ResponseEntity<Optional<User>>(userService.findId(id), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findId(id), HttpStatus.OK);
     }
     @GetMapping("/username/{username}")
     public ResponseEntity<Optional<User>> getUserByUsername(@PathVariable String username) {
-        return new ResponseEntity<Optional<User>>(userService.findUsername(username), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUsername(username), HttpStatus.OK);
     }
     @GetMapping("/email/{email}")
     public ResponseEntity<Optional<User>> getUserByEmail(@PathVariable String email) {
-        return new ResponseEntity<Optional<User>>(userService.findEmail(email), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findEmail(email), HttpStatus.OK);
     }
     @GetMapping("/userID/{userID}")
-    public ResponseEntity<Optional<User>> getSingleUser(@PathVariable String userID) { //passing the information in the getMapping parameters
-        return new ResponseEntity<Optional<User>>(userService.singleUser(userID), HttpStatus.OK);
+    public ResponseEntity<Optional<User>> getSingleUser(@PathVariable int userID) { //passing the information in the getMapping parameters
+        return new ResponseEntity<>(userService.singleUser(userID), HttpStatus.OK);
     }
     @GetMapping("/firstName/{firstName}")
     public ResponseEntity<Optional<User>> getByFirstName(@PathVariable String firstName) {
-        return new ResponseEntity<Optional<User>>(userService.firstName(firstName), HttpStatus.OK);
+        return new ResponseEntity<>(userService.firstName(firstName), HttpStatus.OK);
+    }
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
+        boolean isAvailable = userService.isUsernameAvailable(username);
+        return ResponseEntity.ok(isAvailable);
     }
 }

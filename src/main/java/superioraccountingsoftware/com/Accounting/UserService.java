@@ -24,7 +24,7 @@ public class UserService {
     public Optional<User> findUsername(String username){
         return userRepository.findByUsername(username);
     }
-    public Optional<User> singleUser(String userId){ //its optional because a user many not be returned
+    public Optional<User> singleUser(int userId){ //its optional because a user many not be returned
         return userRepository.findUserByUserID(userId);
     }
     public Optional<User> firstName(String firstName){ //its optional because a user many not be returned
@@ -32,5 +32,9 @@ public class UserService {
     }
     public Optional<User> findEmail(String email){
         return userRepository.findUserByEmail(email);
+    }
+
+    public boolean isUsernameAvailable(String username) {
+        return !userRepository.existsByUsername(username);
     }
 }
