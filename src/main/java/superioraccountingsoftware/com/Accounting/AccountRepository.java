@@ -9,4 +9,6 @@ import org.springframework.stereotype.Service;
 //this interface talks to the database. Data access layer. Getting/retrieving
 @Repository
 public interface AccountRepository extends MongoRepository<Accounts, ObjectId> {
+    Accounts findByAccountNumber(int accountNumber);
+    void deleteById(ObjectId id);
 }

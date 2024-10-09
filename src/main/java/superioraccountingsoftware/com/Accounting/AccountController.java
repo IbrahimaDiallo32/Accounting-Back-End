@@ -1,10 +1,12 @@
 package superioraccountingsoftware.com.Accounting;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/account") //the specified URL the following code wil work for
@@ -69,5 +71,24 @@ public class AccountController {
     @GetMapping("/balanceDESC")
     public ResponseEntity<List<Accounts>> getByAccountBalanceDESC() { //Getting request from user and returning a response
         return new ResponseEntity<>(accountService.getByAccountBalanceDESC(), HttpStatus.OK);
+    }
+    @GetMapping("/accountNum/{accountNumber}")
+    public ResponseEntity<Accounts> getAccountByNum(@PathVariable int accountNumber) {
+        return new ResponseEntity<>(accountService.findByAccountNum(accountNumber), HttpStatus.OK);
+    }
+    @PostMapping("/create")
+    public ResponseEntity<Accounts> createUser(@RequestBody Accounts account) {
+        Accounts createdAccount = accountService.createNewAccount(account);
+        return ResponseEntity.ok(createdAccount); // Return the created Account and HTTP 200 status
+    }
+    @PatchMapping("/edit/{accountNumber}")
+    public ResponseEntity<Accounts> editAccount(@PathVariable int accountNumber, @RequestBody Map<String, Object> updates) {
+        Accounts updatedAccount = accountService.patchAccount(accountNumber, updates);
+        return ResponseEntity.ok(updatedAccount);
+    }
+    @DeleteMapping("/deleteByID/{id}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable ObjectId id) {
+        accountService.deleteAccountById(id);
+        return ResponseEntity.noContent().build();  // Return 204 No Content on successful deletion
     }
 }
