@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -50,5 +51,10 @@ public class UserController {
     public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
         boolean isAvailable = userService.isUsernameAvailable(username);
         return ResponseEntity.ok(isAvailable);
+    }
+    @PatchMapping("/edit/{username}")
+    public ResponseEntity<User> editUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
+        User patchUser = userService.patchUser(username, updates);
+        return ResponseEntity.ok(patchUser);
     }
 }

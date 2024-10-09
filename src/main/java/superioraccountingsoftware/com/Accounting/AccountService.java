@@ -95,6 +95,4 @@ public class AccountService {
         // Save the updated account back to the database (this should trigger an update)
         return accountRepository.save(account); // Ensure this line persists the changes
     }
-
-
 }
