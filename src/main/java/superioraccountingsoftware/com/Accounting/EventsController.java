@@ -15,9 +15,6 @@ public class EventsController {
     @Autowired
     private EventsService eventsService;
 
-    @Autowired
-    private UserService userService;
-
     // Get all event logs
     @GetMapping
     public ResponseEntity<List<Event>> getAllEventLogs() {

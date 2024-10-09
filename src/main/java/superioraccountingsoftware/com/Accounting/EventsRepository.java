@@ -19,10 +19,4 @@ public interface EventsRepository extends MongoRepository<Event, ObjectId> {
     // Find Event by ObjectId
     Optional<Event> findById(ObjectId id);
 
-    public default List<Event> getAllLogs() {
-        List<Event> logs = eventRepository.findAll();
-        System.out.println("Logs fetched from MongoDB: " + logs);  // Debugging
-        return logs;
-    }
-
 }

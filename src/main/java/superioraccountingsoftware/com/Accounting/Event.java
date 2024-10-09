@@ -26,17 +26,6 @@ public class Event {
     private String createdBy; // Who created the event
     private String username;
 
-    public Event(String userId, String beforeChange, String afterChange, String eventType, Date timestamp, String createdBy, String modifiedBy, String username) {
-        this.userId = username;
-        this.beforeChange = beforeChange;
-        this.afterChange = afterChange;
-        this.eventType = eventType;
-        this.timestamp = timestamp;
-        this.createdBy = createdBy;
-        this.modifiedBy=modifiedBy;
-
-    }
-
     public void setId(Object id) {
         this.id = (ObjectId) id;
     }
