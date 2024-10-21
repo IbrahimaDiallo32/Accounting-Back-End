@@ -91,4 +91,10 @@ public class AccountController {
         accountService.deleteAccountById(id);
         return ResponseEntity.noContent().build();  // Return 204 No Content on successful deletion
     }
+    @GetMapping("/filter")
+    public ResponseEntity<List<Accounts>> searchByField(@RequestParam String query){
+        return new ResponseEntity<>(accountService.searchAccounts(query), HttpStatus.OK);
+    }
+
+
 }
