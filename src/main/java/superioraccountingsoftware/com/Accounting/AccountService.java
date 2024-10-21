@@ -15,7 +15,6 @@ import java.lang.reflect.Field;
 public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
-
     public List<Accounts> getAllAccounts() {
         return accountRepository.findAll(); //this method is in the MongoRepository class
     }
@@ -63,6 +62,9 @@ public class AccountService {
     }
     public void deleteAccountById(ObjectId id) {
         accountRepository.deleteById(id);
+    }
+    public List<Accounts> searchAccounts (String query){
+            return accountRepository.searchByMultipleFields(query);
     }
 
     @Transactional
