@@ -13,7 +13,6 @@ public class UserService {
     @Autowired //this will instantiate the userRepository class for us instead of having to use the constructor
     private UserRepository userRepository;
 
-
     public User createNewUser(User user) {
       return userRepository.save(user);
     }

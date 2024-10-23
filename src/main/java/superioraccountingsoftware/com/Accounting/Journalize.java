@@ -12,10 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Journalize {
     private String accountName;
     private double amount;
-    private String accountType;
+    private String entryType;
     private String uniqueID;
     private String fileURL;
     private String dateCreated;
-    private String currentStatus;
-    private String comment;
+    private String completedBy;
+    private String status;
 }

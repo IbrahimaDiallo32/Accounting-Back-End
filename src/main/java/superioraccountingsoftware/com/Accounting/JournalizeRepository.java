@@ -15,4 +15,5 @@ public interface JournalizeRepository extends MongoRepository<Journalize, Object
     List<Journalize> findByAccountName(String accountName);
 
     List<Journalize> findByCurrentStatus(String currentStatus);
+
 }
