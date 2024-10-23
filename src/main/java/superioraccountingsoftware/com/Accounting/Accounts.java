@@ -7,10 +7,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data //this creates getters/setters for methods and ultimately reduces amount of boilerplate code that's written
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection="ChartOfAccounts")
+@Document(collection = "ChartOfAccounts")
 public class Accounts {
     @Id
     private ObjectId id;
@@ -25,8 +25,20 @@ public class Accounts {
     private double credit;
     private double balance;
     private String accountCreatedDate;
-    private String userObjectID;
+    private ObjectId userObjectID; // Store the user ObjectId directly
     private int order;
     private String statement;
     private String comment;
+
+    // If you still want a User reference, you can keep it
+    private User user;
+
+    // Getters and Setters
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

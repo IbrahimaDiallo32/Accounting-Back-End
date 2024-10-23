@@ -6,21 +6,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/hey") //the specified URL the following code wil work for
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private EventsRepository eventsRepository;
+    @Autowired
+    private EventsService eventsService;
 
     @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity createUser(@RequestBody User user, @RequestParam String accountCreatedBy) {
         User createdUser = userService.createNewUser(user);
-        return ResponseEntity.ok(createdUser); // Return the created user and HTTP 200 status
+        return ResponseEntity.ok(createdUser); // Return user ID
     }
+
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() { //Getting request from user and returning a response
@@ -52,9 +59,30 @@ public class UserController {
         boolean isAvailable = userService.isUsernameAvailable(username);
         return ResponseEntity.ok(isAvailable);
     }
+
     @PatchMapping("/edit/{username}")
-    public ResponseEntity<User> editUser(@PathVariable String username, @RequestBody Map<String, Object> updates) {
-        User patchUser = userService.patchUser(username, updates);
-        return ResponseEntity.ok(patchUser);
+    public ResponseEntity<?> editUser(@PathVariable String username, @RequestBody User updatedUser) {
+        User existingUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Capture the before-change state
+        String beforeChange = existingUser.toString();
+
+        // Update the user's details
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setAccountType(updatedUser.getAccountType());
+        existingUser.setAddress(updatedUser.getAddress());
+        userRepository.save(existingUser);
+
+        // Capture the after-change state
+        String afterChange = existingUser.toString();
+
+        // Log the event
+        eventsService.log(existingUser.getId().toString(), "currentUsername", "USER_MODIFIED", beforeChange, afterChange);
+
+        return ResponseEntity.ok("User updated successfully");
     }
+
 }
