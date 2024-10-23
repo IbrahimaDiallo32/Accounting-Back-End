@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
+import java.util.stream.Collectors;
 
 //Class where most business logic will be written
 @Service
@@ -23,6 +24,14 @@ public class AccountService {
     }
     public Accounts findByAccountNum(int accountNumber){ //its optional because a user many not be returned
         return accountRepository.findByAccountNumber(accountNumber);
+    }
+    public List<String> getAllAccountNames(){                            //collecting all account names to display for Ledger of Accounts Selection
+        List<Accounts> accounts = accountRepository.findDistinctAccountNames();
+
+        return accounts.stream()
+                .map(Accounts::getAccountName)
+                .distinct()
+                .collect(Collectors.toList());
     }
     public List<Accounts> getByAccountNumberASC(){
         return accountRepository.findAll(Sort.by(Sort.Order.asc("accountNumber")));

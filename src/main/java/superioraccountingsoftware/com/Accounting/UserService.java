@@ -14,7 +14,6 @@ public class UserService {
     @Autowired
     private EventsRepository eventsRepository;
 
-
     public User createNewUser(User user) {
       return userRepository.save(user);
     }

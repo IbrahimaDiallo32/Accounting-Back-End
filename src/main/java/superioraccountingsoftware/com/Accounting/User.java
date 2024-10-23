@@ -35,11 +35,4 @@ public class User {
     private String accountStatus;
     private boolean passwordIsExpired;
     private String [] recentlyUsedPasswords;
-    private List<UpdateMe> updateMe;
-    @Setter
-    private String createdBy;
-    @Setter
-    private Date createdDate;
-
-
 }
