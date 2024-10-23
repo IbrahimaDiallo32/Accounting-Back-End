@@ -14,6 +14,14 @@ public class JournalizeController {
     @Autowired
     private JournalizeService journalizeService;
 
+    @GetMapping("/account/{accountName}")
+    public ResponseEntity<List<Journalize>> findByAccountName(@PathVariable String accountName){
+            return new ResponseEntity<>(journalizeService.findByAccountName(accountName), HttpStatus.OK);
+    }
+    @GetMapping("/status/{currentStatus}")
+    public ResponseEntity<List<Journalize>> findByCurrentStatus(@PathVariable String currentStatus){
+        return new ResponseEntity<>(journalizeService.findByCurrentStatus(currentStatus), HttpStatus.OK);
+    }
     @PostMapping("/create")
     public ResponseEntity<Journalize> createJournal(@RequestBody Journalize journalize) {
         Journalize journalEntry = journalizeService.createJournalEntry(journalize);
@@ -23,5 +31,4 @@ public class JournalizeController {
     public ResponseEntity<List<Journalize>> getAllJournal() { //Getting request from user and returning a response
         return new ResponseEntity<>(journalizeService.getAllJournalizes(), HttpStatus.OK); //gets all users from DB and giving it to API Layer
     }
-
 }
