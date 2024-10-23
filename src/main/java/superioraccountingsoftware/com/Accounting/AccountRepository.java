@@ -13,6 +13,9 @@ import java.util.List;
 public interface AccountRepository extends MongoRepository<Accounts, ObjectId> {
     Accounts findByAccountNumber(int accountNumber);
 
+    @Query(value = "{}", fields = "{'accountName' : 1}")
+    List<Accounts> findDistinctAccountNames();
+
     @Query("{ $or: [ { 'accountName': { $regex: ?0, $options: 'i' } }," +
             " { 'accountCategory': { $regex: ?0, $options: 'i' } }," +
             " { 'accountSubCategory': { $regex: ?0, $options: 'i' } }," +

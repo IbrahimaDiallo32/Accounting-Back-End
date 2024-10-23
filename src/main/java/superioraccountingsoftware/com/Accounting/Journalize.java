@@ -15,4 +15,7 @@ public class Journalize {
     private String accountType;
     private String uniqueID;
     private String fileURL;
+    private String dateCreated;
+    private String currentStatus;
+    private String comment;
 }

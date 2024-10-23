@@ -1,4 +1,5 @@
 package superioraccountingsoftware.com.Accounting;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,6 +76,10 @@ public class AccountController {
     @GetMapping("/accountNum/{accountNumber}")
     public ResponseEntity<Accounts> getAccountByNum(@PathVariable int accountNumber) {
         return new ResponseEntity<>(accountService.findByAccountNum(accountNumber), HttpStatus.OK);
+    }
+    @GetMapping("/accountName")
+    public List<String> getAllAccountsByName () {
+        return accountService.getAllAccountNames();
     }
     @PostMapping("/create")
     public ResponseEntity<Accounts> createUser(@RequestBody Accounts account) {
