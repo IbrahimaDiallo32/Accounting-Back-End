@@ -1,5 +1,8 @@
 package superioraccountingsoftware.com.Accounting;
 
+import ch.qos.logback.core.LayoutBase;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +26,12 @@ public class EventsController {
     @Autowired
     private EventsRepository eventRepository;
     @Autowired
-    private AccountService accountService;
+    private AccountRepository accountsRepository;
 
     Event event = new Event();
     public User savedUser;
+
+
 
     // Get all event logs
     @GetMapping("/events")
@@ -108,16 +113,19 @@ public class EventsController {
         }
     }
     @PostMapping("/account")
-    public ResponseEntity<?> accounts(@RequestBody User savedUser) {
-        Accounts accounts = new Accounts();
+    public ResponseEntity<?> accounts(@RequestBody Accounts accounts) {
 
-        event.setUserId(savedUser.getUsername());
+
+        // Log the account creation event
+        Event event = new Event();
+        event.setUserId(savedUser.getUsername()); // Use the savedUser from your authentication system
         event.setBeforeChange("~");
         event.setAfterChange("Account created");
         event.setEventType("ACC_CREATED");
         event.setModifiedBy(savedUser.getUsername());
         event.setTimestamp(new Date());
 
+        // Save event to repository
         Event savedEvent = eventRepository.save(event);
         System.out.println("Event logged: " + savedEvent);
 
@@ -126,17 +134,37 @@ public class EventsController {
 
 
 
-    @PutMapping("/account/{id}")
-    public ResponseEntity<?> updateAccount( @RequestBody Map<String, Object> request) {
-        Accounts accounts = (Accounts) request.get("accounts");
-        String accountNumber = (String) request.get("accountNumber");
-        Map<String, String> beforeChange = (Map<String, String>) request.get("beforeChange");
-        Map<String, String> afterChange = (Map<String, String>) request.get("afterChange");
-        String changeDescription = (String) request.get("changeDescription");
+    @PostMapping("/account/{id}")
+    public ResponseEntity<?> updateAccount(
+            @PathVariable("id") String accountId,
+            @RequestBody Map<String, Object> request) {
 
-        Event event = new Event(); // Create a new Event instance
+        // Retrieve the account to be updated from the database
+        Optional<Accounts> accountOptional = accountsRepository.findById(new ObjectId(accountId)); // Assuming you're using MongoDB and ObjectId
+        if (!accountOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
+        }
+
+        Accounts accountToUpdate = accountOptional.get();
+
+        // Assuming the request is structured like this: { "accountNumber": "123", ... }
+        // Update fields based on the provided request map
+        if (request.containsKey("accountNumber")) {
+            accountToUpdate.setAccountNumber((Integer) request.get("accountNumber")); // Change to Integer if accountNumber is an integer
+        }
+        if (request.containsKey("accountDescription")) {
+            accountToUpdate.setAccountDescription((String) request.get("accountDescription"));
+        }
+        // Repeat for other fields that you want to update
+
+        // Now update the account in the database
+        Accounts updatedAccount = accountsRepository.save(accountToUpdate);
+
+        // Log the event (ensuring savedUser is initialized properly)
+         // Assuming this retrieves the currently logged-in user
+        Event event = new Event();
         event.setUserId(savedUser.getUsername());
-        event.setBeforeChange("~");
+        event.setBeforeChange("~"); // Add more logic to track changes
         event.setAfterChange("ACCOUNT UPDATED");
         event.setEventType("ACC_MODIFIED");
         event.setModifiedBy(savedUser.getUsername());
@@ -144,9 +172,13 @@ public class EventsController {
 
         Event savedEvent = eventRepository.save(event);
         System.out.println("Event logged: " + savedEvent);
-        eventsService.log("ACCOUNT_MODIFIED", String.valueOf(accounts.getAccountNumber()));
+
+        eventsService.log("ACCOUNT_MODIFIED", String.valueOf(updatedAccount.getAccountNumber()));
+
         return ResponseEntity.ok("Account updated successfully");
     }
+
+
 
     @PatchMapping("/users/{id}/deactivate")
     public ResponseEntity<?> deactivateUser(@PathVariable Long id) {
@@ -192,12 +224,4 @@ public class EventsController {
 
         return ResponseEntity.ok("Error logged");
     }
-}
-
-
-class AccountRequest {
-    private Accounts accounts;
-    private User user;
-
-    // Getters and Setters
 }
