@@ -71,7 +71,7 @@ public class EventsController {
 
 
         event.setUserId(username);
-        event.setBeforeChange(changeDescription); // You can log this in a different way if needed
+        event.setBeforeChange(beforeChange.toString()); // You can log this in a different way if needed
         event.setAfterChange(changeDescription);  // Update this as per your logging requirement
         event.setEventType("USER_MODIFIED");
         event.setModifiedBy(username);

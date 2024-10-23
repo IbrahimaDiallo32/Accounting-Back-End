@@ -23,7 +23,7 @@ public class UserController {
     private EventsService eventsService;
 
     @PostMapping("/create")
-    public ResponseEntity createUser(@RequestBody User user, @RequestParam String accountCreatedBy) {
+    public ResponseEntity createUser(@RequestBody User user) {
         User createdUser = userService.createNewUser(user);
         return ResponseEntity.ok(createdUser); // Return user ID
     }
