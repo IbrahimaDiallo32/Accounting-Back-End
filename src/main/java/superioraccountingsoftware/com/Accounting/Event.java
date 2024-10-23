@@ -1,14 +1,13 @@
 package superioraccountingsoftware.com.Accounting;
 
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.bson.types.ObjectId;
+
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+@Setter
+@Getter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,17 +15,45 @@ import lombok.NoArgsConstructor;
 public class Event {
 
     @Id
-    private ObjectId id; // o
-    private String userId; //
+    private String id;  // This will store the random UUID
+
+    private String eventType;
+    @Getter
+    @Setter
+    private String userId;
+    private String modifiedBy;
+    private Date timestamp;
     private String beforeChange;
     private String afterChange;
-    private String eventType;
-    private String modifiedBy;
-    private Date timestamp; // Time of the event
-    private String createdBy; // Who created the event
     private String username;
+    private String password;
+    private String newPassword;
+    private String confirmPassword;
+    private String email;
+    @Setter
+    @Getter
+    private String context;
+    @Getter
+    @Setter
+    private String errorMessage;
 
-    public void setId(Object id) {
-        this.id = (ObjectId) id;
+    public Event(String userId, String eventType, Date timestamp, String modifiedBy, String beforeChange, String afterChange, String username, String password, String newPassword, String confirmPassword, String email, String Context) {
+        this.userId = username;
+        this.beforeChange = beforeChange;
+        this.afterChange = afterChange;
+        this.eventType = eventType;
+        this.modifiedBy = username;
+        this.timestamp = timestamp;
+        this.context = context;
+
     }
+
+    public Event(String hexString, Object o, Object o1, String userCreated, Object createdDate, String accountCreatedBy, Object o2, String username) {
+    }
+
+    public Event(String userId, String action, Date date, String createdBy, String username) {
+    }
+
+    // Getters and Setters
+
 }
