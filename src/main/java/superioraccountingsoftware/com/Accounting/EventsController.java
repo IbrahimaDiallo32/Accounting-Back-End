@@ -1,7 +1,5 @@
 package superioraccountingsoftware.com.Accounting;
 
-import ch.qos.logback.core.LayoutBase;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +46,6 @@ public class EventsController {
 
     @PostMapping("/event-logs")
     public ResponseEntity<Event> logEvent(@RequestBody User savedUser) {
-
         event.setUserId(savedUser.getUsername());
         event.setBeforeChange("N/A");
         event.setAfterChange("New user created");
@@ -131,8 +128,6 @@ public class EventsController {
 
         return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
     }
-
-
 
     @PostMapping("/account/{id}")
     public ResponseEntity<?> updateAccount(

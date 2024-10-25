@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-import java.util.List;
 
 @Data //this creates getters/setters for methods and ultimately reduces amount of boilerplate code thats written
 @AllArgsConstructor
@@ -35,4 +34,7 @@ public class User {
     private String accountStatus;
     private boolean passwordIsExpired;
     private String [] recentlyUsedPasswords;
+
+    public void setCreatedDate(Date date) {
+    }
 }
