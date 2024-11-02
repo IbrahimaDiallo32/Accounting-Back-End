@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/account") //the specified URL the following code wil work for
@@ -105,5 +107,26 @@ public class AccountController {
     public ResponseEntity<List<Accounts>> searchByField(@RequestParam String query){
         return new ResponseEntity<>(accountService.searchAccounts(query), HttpStatus.OK);
     }
+  
+    @GetMapping("/balance-sheet") //uses methods in the controller to grab all total balances, which are then referenced in the front end
+    public ResponseEntity<Map<String, Object>> getBalanceSheet(){
+        List<Accounts> assets = accountService.getAssets();
+        List<Accounts> liabilities = accountService.getLiabilities();
+        List<Accounts> equity = accountService.getEquity();
 
+        BigDecimal totalAssets = accountService.getTotalAssets();
+        BigDecimal totalLiabilities = accountService.getTotalLiabilities();
+        BigDecimal totalEquity = accountService.getTotalEquity();
+
+        Map<String, Object> balanceSheet = new HashMap<>();
+        balanceSheet.put("assets", assets);
+        balanceSheet.put("totalAssets", totalAssets);
+        balanceSheet.put("liabilities", liabilities);
+        balanceSheet.put("totalLiabilities", totalLiabilities);
+        balanceSheet.put("equity", equity);
+        balanceSheet.put("totalEquity", totalEquity);
+        balanceSheet.put("totalLiabilitiesAndEquity", totalLiabilities.add(totalEquity));
+
+        return ResponseEntity.ok(balanceSheet);
+    }
 }

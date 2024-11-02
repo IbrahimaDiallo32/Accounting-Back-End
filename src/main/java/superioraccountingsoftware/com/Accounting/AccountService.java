@@ -1,5 +1,7 @@
 package superioraccountingsoftware.com.Accounting;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.*;
 
 import org.bson.types.ObjectId;
@@ -74,6 +76,37 @@ public class AccountService {
     }
     public List<Accounts> searchAccounts (String query){
             return accountRepository.searchByMultipleFields(query);
+    }
+
+    //The following methods are used in creating statements for sprint 4
+    //Balance Sheet
+
+    public List<Accounts> getAssets(){
+        return accountRepository.findByAccountCategory("Asset");
+    }
+    public List<Accounts> getLiabilities(){
+        return accountRepository.findByAccountCategory("Liability");
+    }
+    public List<Accounts> getEquity(){
+        return accountRepository.findByAccountCategory("Equity");
+    }
+    public BigDecimal getTotalAssets(){
+        List<Accounts> assets = accountRepository.findByAccountCategory("Asset");
+        return assets.stream()
+                .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add );
+    }
+    public BigDecimal getTotalLiabilities(){
+        List<Accounts> assets = accountRepository.findByAccountCategory("Liability");
+        return assets.stream()
+                .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add );
+    }
+    public BigDecimal getTotalEquity(){
+        List<Accounts> assets = accountRepository.findByAccountCategory("Equity");
+        return assets.stream()
+                .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add );
     }
 
     @Transactional

@@ -13,6 +13,8 @@ import java.util.List;
 public interface AccountRepository extends MongoRepository<Accounts, ObjectId> {
     Accounts findByAccountNumber(int accountNumber);
 
+    List<Accounts> findByAccountCategory(String category);
+
     @Query(value = "{}", fields = "{'accountName' : 1}")
     List<Accounts> findDistinctAccountNames();
 
