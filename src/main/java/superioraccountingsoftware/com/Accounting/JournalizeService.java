@@ -1,10 +1,19 @@
 package superioraccountingsoftware.com.Accounting;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 @Service
 public class JournalizeService{
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     @Autowired
     JournalizeRepository journalizeRepository;
     public Journalize createJournalEntry(Journalize journalize) {
@@ -19,4 +28,5 @@ public class JournalizeService{
     public List<Journalize> findByCurrentStatus (String status){
         return journalizeRepository.findByStatus(status);
     }
+
 }

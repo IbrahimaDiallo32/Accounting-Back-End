@@ -107,8 +107,7 @@ public class AccountController {
     public ResponseEntity<List<Accounts>> searchByField(@RequestParam String query){
         return new ResponseEntity<>(accountService.searchAccounts(query), HttpStatus.OK);
     }
-
-
+  
     @GetMapping("/balance-sheet") //uses methods in the controller to grab all total balances, which are then referenced in the front end
     public ResponseEntity<Map<String, Object>> getBalanceSheet(){
         List<Accounts> assets = accountService.getAssets();
@@ -130,5 +129,4 @@ public class AccountController {
 
         return ResponseEntity.ok(balanceSheet);
     }
-
 }
