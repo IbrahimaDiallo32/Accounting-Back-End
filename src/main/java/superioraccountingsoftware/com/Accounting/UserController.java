@@ -18,8 +18,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private EventsRepository eventsRepository;
-    @Autowired
     private EventsService eventsService;
 
     @PostMapping("/create")
@@ -27,7 +25,6 @@ public class UserController {
         User createdUser = userService.createNewUser(user);
         return ResponseEntity.ok(createdUser); // Return user ID
     }
-
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() { //Getting request from user and returning a response

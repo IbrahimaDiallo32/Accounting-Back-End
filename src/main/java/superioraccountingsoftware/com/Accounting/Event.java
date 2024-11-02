@@ -23,6 +23,8 @@ public class Event {
     private String userId;
     private String modifiedBy;
     private Date timestamp;
+    private String eventID;
+    private String dateAndTime;
     private String beforeChange;
     private String afterChange;
     private String username;

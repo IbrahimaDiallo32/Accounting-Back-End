@@ -29,13 +29,16 @@ public class EventsController {
     Event event = new Event();
     public User savedUser;
 
-
-
     // Get all event logs
-    @GetMapping("/events")
-    public ResponseEntity<List<Event>> getAllEventLogs() {
-        List<Event> logs = eventsService.getAllLogs();
-        return ResponseEntity.ok(logs);
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Event>> getAllEvents() { //Getting request from user and returning a response
+        return new ResponseEntity<>(eventsService.getAllLogs(), HttpStatus.OK); //gets all users from DB and giving it to API Layer
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity createEvent(@RequestBody Event event) {
+        Event createdEvent = eventsService.createNewLog(event);
+        return ResponseEntity.ok(createdEvent); // Return user ID
     }
 
     @PostMapping("/add")
@@ -52,10 +55,7 @@ public class EventsController {
         event.setEventType("USER_CREATED");
         event.setModifiedBy(savedUser.getUsername());
         event.setTimestamp(new Date());
-
         Event savedEvent = eventRepository.save(event);
-        System.out.println("Event logged: " + savedEvent);
-
         return new ResponseEntity<>(savedEvent, HttpStatus.CREATED);
     }
 

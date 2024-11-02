@@ -12,11 +12,16 @@ public class EventsService {
     @Autowired
     private EventsRepository eventRepository;
 
-
+    public Event createNewLog(Event event) {
+        return eventRepository.save(event);
+    }
     public List<Event> getAllLogs() {
         return eventRepository.findAll(); // Fetch all logs
     }
-
+//
+//    public Event createNewLoginLog(Event event) {
+//        return eventRepository.save(event);
+//    }
 
     public void log(String userId, String createdBy, String eventType, String beforeChange, String afterChange) {
         Event event = new Event();
@@ -30,11 +35,6 @@ public class EventsService {
         eventRepository.save(event);
     }
 
-
     public void log(String accountDeactivated, String username) {
-    }
-
-    public void log(Event event) {
-
     }
 }

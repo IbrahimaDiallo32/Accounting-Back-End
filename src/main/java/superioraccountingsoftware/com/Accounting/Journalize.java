@@ -18,4 +18,10 @@ public class Journalize {
     private String dateCreated;
     private String completedBy;
     private String status;
+    private String dateRejected;
+    private String reasonForRejection;
+    private String rejectedBy;
+    private String comments;
+    private String dateApproved;
+    private String journalType;
 }

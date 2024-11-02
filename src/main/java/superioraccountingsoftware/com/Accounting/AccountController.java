@@ -106,5 +106,4 @@ public class AccountController {
         return new ResponseEntity<>(accountService.searchAccounts(query), HttpStatus.OK);
     }
 
-
 }
