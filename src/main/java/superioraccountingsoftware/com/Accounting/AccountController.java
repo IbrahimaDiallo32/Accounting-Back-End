@@ -88,9 +88,7 @@ public class AccountController {
     }
     @PostMapping("/create")
     public ResponseEntity<Accounts> createUser(@RequestBody Accounts account) {
-        Accounts createdAccount = null;
-        eventsService.log("ACCOUNT_CREATED", createdAccount.getAccountName());
-        createdAccount = accountService.createNewAccount(account);
+        Accounts createdAccount = accountService.createNewAccount(account);
         return ResponseEntity.ok(createdAccount); // Return the created Account and HTTP 200 status
     }
     @PatchMapping("/edit/{accountNumber}")
