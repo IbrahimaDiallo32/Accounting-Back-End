@@ -107,7 +107,8 @@ public class AccountController {
     public ResponseEntity<List<Accounts>> searchByField(@RequestParam String query){
         return new ResponseEntity<>(accountService.searchAccounts(query), HttpStatus.OK);
     }
-  
+
+
     @GetMapping("/balance-sheet") //uses methods in the controller to grab all total balances, which are then referenced in the front end
     public ResponseEntity<Map<String, Object>> getBalanceSheet(){
         List<Accounts> assets = accountService.getAssets();
@@ -128,5 +129,54 @@ public class AccountController {
         balanceSheet.put("totalLiabilitiesAndEquity", totalLiabilities.add(totalEquity));
 
         return ResponseEntity.ok(balanceSheet);
+    }
+
+    @GetMapping("/trial-balance")
+    public ResponseEntity<Map<String,Object>> getTrialBalance(){
+        List<Accounts> assets = accountService.getAssets();
+        List<Accounts> liabilities = accountService.getLiabilities();
+        List<Accounts> equity = accountService.getEquity();
+        List<Accounts> Revenue = accountService.getRevenue();
+        List<Accounts> Expense = accountService.getExpense();
+
+        BigDecimal totalAssets = accountService.getTotalAssets();
+        BigDecimal totalLiabilities = accountService.getTotalLiabilities();
+        BigDecimal totalEquity = accountService.getTotalEquity();
+        BigDecimal totalRevenue = accountService.getTotalRevenue();
+        BigDecimal totalExpense = accountService.getTotalExpense();
+
+        Map<String, Object> trialBalance = new HashMap<>();
+        trialBalance.put("assets", assets);
+        trialBalance.put("totalAssets", totalAssets);
+        trialBalance.put("liabilities", liabilities);
+        trialBalance.put("totalLiabilities", totalLiabilities);
+        trialBalance.put("equity", equity);
+        trialBalance.put("totalEquity", totalEquity);
+        trialBalance.put("revenue", Revenue);
+        trialBalance.put("totalRevenue", totalRevenue);
+        trialBalance.put("expense", Expense);
+        trialBalance.put("totalExpense", totalExpense);
+        trialBalance.put("totalDebit", totalExpense.add(totalAssets));
+        trialBalance.put("totalCredit", totalLiabilities.add(totalEquity.add(totalRevenue)));
+
+        return ResponseEntity.ok(trialBalance);
+    }
+
+    @GetMapping("/income-statement") //this get function is also used for the retained earnings statement with comments next to what was added for it
+    public ResponseEntity<Map<String,Object>> getIncomeStatement(){
+        List<Accounts> Revenue = accountService.getRevenue();
+        List<Accounts> Expense = accountService.getExpense();
+
+        BigDecimal totalRevenue = accountService.getTotalRevenue();
+        BigDecimal totalExpense = accountService.getTotalExpense();
+
+        Map<String,Object> incomeStatement = new HashMap<>();
+        incomeStatement.put("revenue", Revenue);
+        incomeStatement.put("totalRevenue", totalRevenue);
+        incomeStatement.put("expense", Expense);
+        incomeStatement.put("totalExpense", totalExpense);
+        incomeStatement.put("netIncome", totalRevenue.subtract(totalExpense));
+
+        return ResponseEntity.ok(incomeStatement);
     }
 }

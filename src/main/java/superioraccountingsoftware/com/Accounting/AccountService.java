@@ -27,6 +27,9 @@ public class AccountService {
     public Accounts findByAccountNum(int accountNumber){ //its optional because a user many not be returned
         return accountRepository.findByAccountNumber(accountNumber);
     }
+    public Accounts findByAccountName(String accountName){
+        return accountRepository.findByAccountName(accountName);
+    }
     public List<String> getAllAccountNames(){                            //collecting all account names to display for Ledger of Accounts Selection
         List<Accounts> accounts = accountRepository.findDistinctAccountNames();
 
@@ -109,6 +112,29 @@ public class AccountService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add );
     }
 
+    // Trial Balance (These are also used in the income statement and retained earnings statement)
+    public List<Accounts> getRevenue(){
+        return accountRepository.findByAccountCategory("Revenue");
+    }
+    public List<Accounts> getExpense(){
+        return accountRepository.findByAccountCategory("Expense");
+    }
+    public BigDecimal getTotalRevenue(){
+        List<Accounts> revenue = accountRepository.findByAccountCategory("Revenue");
+        return revenue.stream()
+                .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    public BigDecimal getTotalExpense(){
+        List<Accounts> expense = accountRepository.findByAccountCategory("Expense");
+        return expense.stream()
+                .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    public BigDecimal getDividens(){
+        Accounts dividends = accountRepository.findByAccountName("Dividends");
+        return new BigDecimal(dividends.getBalance());
+    }
     @Transactional
     public Accounts patchAccount(int accountNumber, Map<String, Object> updates) {
         // Retrieve the existing account
