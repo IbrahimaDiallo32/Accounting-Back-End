@@ -65,4 +65,21 @@ public class JournalizeController {
             return ResponseEntity.status(500).body("Error updating journal entries: " + e.getMessage());
         }
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Journalize>> searchByField(@RequestParam String query){
+        return new ResponseEntity<>(journalizeService.searchAccounts(query), HttpStatus.OK);
+    }
+    @GetMapping("/filter-approved")
+    public ResponseEntity<List<Journalize>> searchByApproved(@RequestParam String query){
+        return new ResponseEntity<>(journalizeService.searchApproved(query), HttpStatus.OK);
+    }
+    @GetMapping("/filter-pending")
+    public ResponseEntity<List<Journalize>> searchByPending(@RequestParam String query){
+        return new ResponseEntity<>(journalizeService.searchPending(query), HttpStatus.OK);
+    }
+    @GetMapping("/filter-rejected")
+    public ResponseEntity<List<Journalize>> searchByRejected(@RequestParam String query){
+        return new ResponseEntity<>(journalizeService.searchRejected(query), HttpStatus.OK);
+    }
 }
