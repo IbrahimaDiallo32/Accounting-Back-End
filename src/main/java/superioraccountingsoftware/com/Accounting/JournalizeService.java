@@ -29,4 +29,16 @@ public class JournalizeService{
         return journalizeRepository.findByStatus(status);
     }
 
+    public List<Journalize> searchAccounts (String query){
+        return journalizeRepository.searchByMultipleFields(query);
+    }
+    public List<Journalize> searchApproved (String query){
+        return journalizeRepository.searchByMultipleFieldsAndApproved(query);
+    }
+    public List<Journalize> searchPending (String query){
+        return journalizeRepository.searchByMultipleFieldsAndPending(query);
+    }
+    public List<Journalize> searchRejected (String query){
+        return journalizeRepository.searchByMultipleFieldsAndRejected(query);
+    }
 }
