@@ -18,10 +18,6 @@ public class EventsService {
     public List<Event> getAllLogs() {
         return eventRepository.findAll(); // Fetch all logs
     }
-//
-//    public Event createNewLoginLog(Event event) {
-//        return eventRepository.save(event);
-//    }
 
     public void log(String userId, String createdBy, String eventType, String beforeChange, String afterChange) {
         Event event = new Event();
@@ -33,8 +29,5 @@ public class EventsService {
         event.setTimestamp(new Date()); // Log the current timestamp
 
         eventRepository.save(event);
-    }
-
-    public void log(String accountDeactivated, String username) {
     }
 }

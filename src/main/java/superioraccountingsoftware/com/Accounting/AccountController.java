@@ -16,13 +16,15 @@ import java.util.HashMap;
 public class AccountController {
     @Autowired
     private AccountService accountService;
-    @Autowired
-    private EventsService eventsService;
-
 
     @GetMapping
     public ResponseEntity<List<Accounts>> getAllAccounts() { //Getting request from user and returning a response
         return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.OK); //gets all users from DB and giving it to API Layer
+    }
+
+    @GetMapping("/GetByAccountName/{accountName}")
+    public ResponseEntity<Accounts> getByAccountName(@PathVariable String accountName) {
+        return new ResponseEntity<>(accountService.findByAccountName(accountName), HttpStatus.OK);
     }
 
     @GetMapping("/accountNumberASC")
