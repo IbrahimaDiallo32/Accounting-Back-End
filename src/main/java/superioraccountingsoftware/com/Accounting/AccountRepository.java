@@ -14,6 +14,7 @@ public interface AccountRepository extends MongoRepository<Accounts, ObjectId> {
     Accounts findByAccountNumber(int accountNumber);
     Accounts findByAccountName(String accountName);
     List<Accounts> findByAccountCategory(String category);
+    List<Accounts> findByAccountSubCategory(String category);
 
     @Query(value = "{}", fields = "{'accountName' : 1}")
     List<Accounts> findDistinctAccountNames();
