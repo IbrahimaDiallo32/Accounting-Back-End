@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.math.BigDecimal;
 import java.util.HashMap;
-
+import java.math.RoundingMode;
 @RestController
 @RequestMapping("/account") //the specified URL the following code wil work for
 public class AccountController {
@@ -169,14 +169,39 @@ public class AccountController {
 
         BigDecimal totalRevenue = accountService.getTotalRevenue();
         BigDecimal totalExpense = accountService.getTotalExpense();
+        BigDecimal dividends = accountService.getDividens();
+        BigDecimal beginingBalance = accountService.getBeginingRetainedEarnings();
 
         Map<String,Object> incomeStatement = new HashMap<>();
         incomeStatement.put("revenue", Revenue);
         incomeStatement.put("totalRevenue", totalRevenue);
         incomeStatement.put("expense", Expense);
         incomeStatement.put("totalExpense", totalExpense);
+        incomeStatement.put("dividends", dividends);
+        incomeStatement.put("beginingRetainedEarnings", beginingBalance);
         incomeStatement.put("netIncome", totalRevenue.subtract(totalExpense));
 
         return ResponseEntity.ok(incomeStatement);
     }
+    @GetMapping("/dashboard")
+    public ResponseEntity<Map<String,Object>> getDashboardRatios(){
+        BigDecimal currentAssets = accountService.getTotalCurrentAssets();
+        BigDecimal currentLiabilities = accountService.getTotalCurrentLiabilities();
+        BigDecimal totalAssets = accountService.getTotalAssets();
+        BigDecimal totalLiabilities = accountService.getTotalLiabilities();
+        BigDecimal totalRevenue = accountService.getTotalRevenue();
+        BigDecimal equity = accountService.getTotalEquity();
+        BigDecimal expenses = accountService.getTotalExpense();
+
+        Map<String,Object> dashboardRatios = new HashMap<>();
+        dashboardRatios.put("currentRatio", (currentAssets.divide(currentLiabilities, 5, RoundingMode.HALF_UP)).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+        dashboardRatios.put("returnOnAssets", (totalRevenue.subtract(expenses)).divide(totalAssets, 5, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+        dashboardRatios.put("netProfitMargin", (totalRevenue.subtract(expenses)).divide(totalRevenue, 5, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+        dashboardRatios.put("returnOnEquity", (totalRevenue.subtract(expenses)).divide(equity, 5, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+        dashboardRatios.put("assetTurnover", totalRevenue.divide(totalAssets, 5, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+        dashboardRatios.put("quickRatio", currentAssets.divide(totalLiabilities, 5, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+
+        return ResponseEntity.ok(dashboardRatios);
+    }
+
 }

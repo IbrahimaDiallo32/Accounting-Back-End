@@ -99,8 +99,20 @@ public class AccountService {
                 .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add );
     }
+    public BigDecimal getTotalCurrentAssets(){
+        List<Accounts> assets = accountRepository.findByAccountSubCategory("Current Asset");
+        return assets.stream()
+                .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add );
+    }
     public BigDecimal getTotalLiabilities(){
         List<Accounts> assets = accountRepository.findByAccountCategory("Liability");
+        return assets.stream()
+                .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add );
+    }
+    public BigDecimal getTotalCurrentLiabilities(){
+        List<Accounts> assets = accountRepository.findByAccountSubCategory("Current Liability");
         return assets.stream()
                 .map(Accounts ->BigDecimal.valueOf(Accounts.getBalance()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add );
@@ -132,8 +144,12 @@ public class AccountService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
     public BigDecimal getDividens(){
-        Accounts dividends = accountRepository.findByAccountName("Dividends");
-        return new BigDecimal(dividends.getBalance());
+        Accounts dividends = accountRepository.findByAccountName("Dividends Declared");
+        return BigDecimal.valueOf(dividends.getBalance());
+    }
+    public BigDecimal getBeginingRetainedEarnings(){
+        Accounts ReatinedEarningsBegin = accountRepository.findByAccountName("Retained Earnings");
+        return BigDecimal.valueOf(ReatinedEarningsBegin.getBalance());
     }
     @Transactional
     public Accounts patchAccount(int accountNumber, Map<String, Object> updates) {
